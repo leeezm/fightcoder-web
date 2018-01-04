@@ -20,6 +20,21 @@ import (
 type UserManager struct {
 }
 
+func (this UserManager) UploadImage(reader io.Reader, userId int64, picType string) bool {
+	var flag bool
+	path := NewMinioCli().SaveImg(reader, userId, picType)
+	user, error := models.User{}.GetById(userId)
+	if user == nil || error != nil {
+		flag = true
+	} else {
+		user.Avator = path
+		if err := (models.User{}).Update(user); err != nil {
+			flag = true
+		}
+	}
+	return flag
+}
+
 func (this UserManager) CompleteMess(id int64, nickName, description string, sex int, birthday, dailyAddress, recvAddress, tShirtSize string, statSchool int, blog, git string) error {
 	birth, _ := strconv.ParseInt(birthday, 10, 64)
 	user := &models.User{Id: id, NickName: nickName, Description: description, Sex: sex, Birthday: birth, DailyAddress: dailyAddress, RecvAddress: recvAddress, TShirtSize: tShirtSize, StatSchool: statSchool, Blog: blog, Git: git}

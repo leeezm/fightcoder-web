@@ -12,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//会先进行登录验证
 type Problem struct {
 	baseController.Base
 }
@@ -29,46 +28,51 @@ func (this *Problem) Register(routergrp *gin.RouterGroup) {
 }
 
 func (this *Problem) httpHandlerSaveCode(c *gin.Context) {
-	var saveCode models.SaveCode
-	if err := c.BindJSON(&saveCode); err != nil {
-		panic(err)
+	problemId := this.MustInt64("problemId", c)
+	code := this.MustString("code", c)
+	userId, _ := c.Get("userId")
+	if id, ok := userId.(int64); ok {
+		managers.ProblemManager{}.SaveCode(problemId, id, code)
+		c.JSON(http.StatusOK, this.Success("保存成功"))
+	} else {
+		c.JSON(http.StatusOK, this.Fail("保存失败"))
 	}
-	managers.ProblemManager{}.SaveCode(saveCode.ProblemId, saveCode.UserId, saveCode.Code)
-	c.JSON(http.StatusOK, this.Success())
+
 }
 
 func (this *Problem) httpHandlerGetCode(c *gin.Context) {
 	problemId := this.MustInt64("id", c)
-	var userId int64 = 2
-	code := managers.ProblemManager{}.GetCode(problemId, userId)
-	c.JSON(http.StatusOK, this.Success(code))
+	userId, _ := c.Get("userId")
+	if id, ok := userId.(int64); ok {
+		code := managers.ProblemManager{}.GetCode(problemId, id)
+		c.JSON(http.StatusOK, this.Success(code))
+	} else {
+		c.JSON(http.StatusOK, this.Fail("保存失败"))
+	}
 }
 
 func (this *Problem) httpHandlerAddProblem(c *gin.Context) {
-	var problem ProblemRequest
+	var problem models.ProblemUser
 	if err := c.BindJSON(&problem); err != nil {
 		panic(err)
 	}
-	managers.ProblemManager{}.SubmitByUser(&problem.Data)
+	managers.ProblemManager{}.SubmitByUser(&problem)
 	c.JSON(http.StatusOK, this.Success())
 }
 
 func (this *Problem) httpHandlerDeleteProblem(c *gin.Context) {
-	var problem ProblemRequest
-	if err := c.BindJSON(&problem); err != nil {
-		panic(err)
-	}
-	managers.ProblemManager{}.RemoveProblemUser(problem.Data.Id)
+	id := this.MustInt64("id", c)
+	managers.ProblemManager{}.RemoveProblemUser(id)
 	c.JSON(http.StatusOK, this.Success())
 }
 
 func (this *Problem) httpHandlerUpdateProblem(c *gin.Context) {
-	var problem ProblemRequest
+	var problem models.ProblemUser
 	if err := c.BindJSON(&problem); err != nil {
 		panic(err)
 	}
 
-	managers.ProblemManager{}.UpdateByUser(&problem.Data)
+	managers.ProblemManager{}.UpdateByUser(&problem)
 	c.JSON(http.StatusOK, this.Success())
 }
 
@@ -92,10 +96,4 @@ func (this *Problem) httpHandlerAddProblemCheck(c *gin.Context) {
 	problemId := this.MustInt64("id", c)
 	managers.ProblemManager{}.AddProblemCheck(problemId)
 	c.JSON(http.StatusOK, this.Success())
-}
-
-type ProblemRequest struct {
-	UserId int64              `json:"userId"`
-	Token  string             `json:"token"`
-	Data   models.ProblemUser `json:"data"`
 }

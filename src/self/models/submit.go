@@ -17,6 +17,16 @@ type Submit struct {
 	Code          string `form:"code" json:"code"`                   //提交代码
 }
 
+type SubmitResponse struct {
+	*Submit `xorm:"extends" json:"submit"`
+	Title   string `json:"title"`
+}
+
+type CompleteSubmitResponse struct {
+	IsHide          bool `json:"isHide"`
+	*SubmitResponse `json:"submit"`
+}
+
 //增加
 func (this Submit) Create(submit *Submit) (int64, error) {
 	_, err := OrmWeb.Insert(submit)
@@ -40,9 +50,9 @@ func (this Submit) Update(submit *Submit) error {
 }
 
 //查询
-func (this Submit) GetById(id int64) (*Submit, error) {
-	submit := new(Submit)
-	has, err := OrmWeb.Id(id).Get(submit)
+func (this Submit) GetById(id int64) (*SubmitResponse, error) {
+	submit := &SubmitResponse{}
+	has, err := OrmWeb.Id(id).Table("submit").Join("INNER", "problem", "submit.problem_id = problem.id").Get(submit)
 
 	if err != nil {
 		return nil, err
