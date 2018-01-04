@@ -7,7 +7,7 @@ import (
 func TestSubmitContestCreate(t *testing.T) {
 	InitAllInTest()
 
-	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: "AC", ResultDes: "haha", CaseResult: "aaa", Code: "sskajka"}
+	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha", Code: "sskajka"}
 	if _, err := submitContest.Create(submitContest); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
@@ -31,7 +31,7 @@ func TestSubmitContestRemove(t *testing.T) {
 func TestSubmitContestGetById(t *testing.T) {
 	InitAllInTest()
 
-	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: "AC", ResultDes: "haha", CaseResult: "aaa", Code: "sskajka"}
+	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha",Code: "sskajka"}
 	submitContest.Create(submitContest)
 
 	getSubmitContest, err := submitContest.GetById(submitContest.Id)

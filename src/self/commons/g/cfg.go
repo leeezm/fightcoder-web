@@ -21,7 +21,7 @@ type Config struct {
 	Mysql MysqlConfig `toml:"mysql"`
 	Minio MinioConfig `toml:"minio"`
 	Show  ShowConfig  `toml:"show"`
-	Jwt   JwtConfig   `toml:"show"`
+	Jwt   JwtConfig   `toml:"jwt"`
 }
 
 type RunConfig struct {

@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 	"self/commons"
-	components "self/commons/components"
+	"self/commons/components"
 	"self/commons/g"
 	"self/controllers"
 

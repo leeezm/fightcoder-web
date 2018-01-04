@@ -20,17 +20,37 @@ import (
 type UserManager struct {
 }
 
-func (this UserManager) Register(email, password string) {
+func (this UserManager) CompleteMess(id int64, nickName, description string, sex int, birthday, dailyAddress, recvAddress, tShirtSize string, statSchool int, blog, git string) error {
+	birth, _ := strconv.ParseInt(birthday, 10, 64)
+	user := &models.User{Id: id, NickName: nickName, Description: description, Sex: sex, Birthday: birth, DailyAddress: dailyAddress, RecvAddress: recvAddress, TShirtSize: tShirtSize, StatSchool: statSchool, Blog: blog, Git: git}
+	err := (models.User{}).Update(user)
+	return err
+}
+
+func (this UserManager) Check(email string) int {
+	account, err := models.Account{}.GetByAccount(&models.Account{Email: email})
+	if err != nil {
+		return 1
+	} else if account == nil {
+		return 2
+	} else {
+		return 3
+	}
+}
+
+func (this UserManager) Register(email, password string) bool {
+	var flag bool
 	account := &models.Account{Email: email, Password: md5Encode(password)}
 	accountId, err := models.Account{}.Add(account)
 	if err != nil {
-		panic(err)
+		flag = true
 	}
 	user := &models.User{AccountId: accountId}
 	_, erro := models.User{}.Create(user)
 	if erro != nil {
-		panic(err)
+		flag = true
 	}
+	return flag
 }
 
 func (this UserManager) Login(email, password string) (int, string) {

@@ -8,7 +8,7 @@ import (
 func TestSubmitCreate(t *testing.T) {
 	InitAllInTest()
 
-	submit := &Submit{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: "AC", ResultDes: "haha", CaseResult: "aaa", Code: "sskajka"}
+	submit := &Submit{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha",Code: "sskajka"}
 	if _, err := submit.Create(submit); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
@@ -32,7 +32,7 @@ func TestSubmitRemove(t *testing.T) {
 func TestSubmitGetById(t *testing.T) {
 	InitAllInTest()
 
-	submit := &Submit{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: "AC", ResultDes: "haha", CaseResult: "aaa", Code: "sskajka"}
+	submit := &Submit{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha", Code: "sskajka"}
 	submit.Create(submit)
 
 	getSubmit, err := submit.GetById(submit.Id)
