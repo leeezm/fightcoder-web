@@ -1,0 +1,10 @@
+*.iml
+.idea/
+.DS_Store
+/log
+/logs
+/pkg
+/deps/pkg
+/tmp
+/src/self/managers/minio_test.go
+/src/self/managers/user_test.go
