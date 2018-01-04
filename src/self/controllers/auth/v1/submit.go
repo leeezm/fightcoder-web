@@ -7,12 +7,9 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
-	"time"
-
-	"self/commons/g"
 	"self/controllers/baseController"
 	"self/managers"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )

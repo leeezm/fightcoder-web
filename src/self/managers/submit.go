@@ -1,8 +1,8 @@
 package managers
 
 import (
-	"flag"
 	models "self/models"
+	"strconv"
 )
 
 type SubmitManager struct {
@@ -35,18 +35,35 @@ func (this SubmitManager) GetSubmitById(id, userId int64) (*models.CompleteSubmi
 	return res, flag
 }
 
-func (this SubmitManager) CountSubmit(problemId, userId int64, language, resultDes string) int {
-	if sum, err := (models.Submit{}).Count(problemId, userId, language, resultDes); err != nil {
+func (this SubmitManager) CountSubmit(problemId, language, resultDes string) int {
+	id, _ := strconv.ParseInt(problemId, 10, 64)
+	if sum, err := (models.Submit{}).Count(id, 0, language, resultDes); err != nil {
 		panic(err)
 	} else {
 		return int(sum)
 	}
 }
 
-func (this SubmitManager) GetsSubmit(problemId, userId int64, language, resultDes string, size, start int) []*models.Submit {
-	if submits, err := (models.Submit{}).QueryBySubmit(problemId, userId, language, resultDes, size, start); err != nil {
-		panic(err)
+func (this SubmitManager) GetsSubmit(problemId, language, resultDes string, size, start int) ([]*models.SubmitResponse, bool) {
+	var response []*models.SubmitResponse
+	var flag bool
+	id, _ := strconv.ParseInt(problemId, 10, 64)
+	submits, err := (models.Submit{}).QueryBySubmit(id, 0, language, resultDes, size, start)
+	if submits == nil || err != nil {
+		flag = true
 	} else {
-		return submits
+		length := len(submits)
+		response = make([]*models.SubmitResponse, length)
+		for i, v := range submits {
+			res := &models.SubmitResponse{Submit: v}
+			problem, err := models.Problem{}.GetById(res.ProblemId)
+			if err != nil || problem == nil {
+				flag = true
+				break
+			}
+			res.Title = problem.Title
+			response[i] = res
+		}
 	}
+	return response, flag
 }
