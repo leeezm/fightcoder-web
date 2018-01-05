@@ -9,7 +9,7 @@ type HttpResponse struct {
 type PagingResponse struct {
 	RequestPage int         `json:"requestPage"`
 	TotalPages  int         `json:"totalPages"`
-	Data        interface{} `json:"data"`
+	List        interface{} `json:"list"`
 }
 
 func (this *Base) Success(data ...interface{}) *HttpResponse {

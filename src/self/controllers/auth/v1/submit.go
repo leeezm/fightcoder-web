@@ -6,9 +6,11 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"self/controllers/baseController"
 	"self/managers"
+	"self/models"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -31,9 +33,9 @@ func (this *Submit) httpHandlerAddSubmit(c *gin.Context) {
 
 	userId, _ := c.Get("userId")
 	if id, ok := userId.(int64); ok {
-		flag := managers.SubmitManager{}.AddSubmit(problemId, id, language, submitTime, code)
+		submit, flag := managers.SubmitManager{}.AddSubmit(problemId, id, language, submitTime, code)
 		if !flag {
-			c.JSON(http.StatusOK, this.Success("提交成功!"))
+			c.JSON(http.StatusOK, this.Success(submit.Id))
 		}
 	} else {
 		c.JSON(http.StatusOK, this.Fail("提交失败!"))
@@ -45,6 +47,10 @@ func (this *Submit) httpHandlerGetSubmitById(c *gin.Context) {
 	userId, _ := c.Get("userId")
 	if id, ok := userId.(int64); ok {
 		submit, flag := managers.SubmitManager{}.GetSubmitById(submitId, id)
+		submit.AcCase += 25
+		submit.Result += 1
+		models.Submit{}.Update(submit.Submit)
+		fmt.Println("Result -> ", submit.Result)
 		if !flag {
 			c.JSON(http.StatusOK, this.Success(submit))
 		}

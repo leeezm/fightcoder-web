@@ -23,9 +23,18 @@ func GetCurrentId(token string) int64 {
 	return userId
 }
 
+func AutoLogin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, "/") {
+
+		}
+		c.Next()
+	}
+}
+
 func Check() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, "/auth") {
+		if strings.HasPrefix(c.Request.URL.Path, "/auth") || strings.HasPrefix(c.Request.URL.Path, "/api/v1/login") {
 			checkLogin(c)
 		}
 		c.Next()

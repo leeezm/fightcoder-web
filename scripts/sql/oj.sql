@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `email` varchar(50) NOT NULL COMMENT '邮箱',
-  `password` varchar(30) NOT NULL COMMENT '密码',
+  `password` varchar(50) NOT NULL COMMENT '密码',
   `phone` varchar(20) NOT NULL COMMENT '手机号',
   `qq_number` varchar(20) DEFAULT NULL COMMENT 'QQ号',
   `qq_id` int(11) DEFAULT NULL COMMENT '用于第三方登录',
@@ -254,9 +254,9 @@ DROP TABLE IF EXISTS `problem`;
 CREATE TABLE `problem` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` bigint(20) NOT NULL COMMENT '题目提供者',
-  `test_data` varchar(2000) NOT NULL COMMENT '测试数据',
+  `test_data` varchar(2000) COMMENT '测试数据',
   `title` varchar(50) NOT NULL COMMENT '题目标题',
-  `description` varchar(500) NOT NULL COMMENT '题目描述',
+  `description` varchar(5000) NOT NULL COMMENT '题目描述',
   `input_des` varchar(300) NOT NULL COMMENT '输入描述',
   `output_des` varchar(300) NOT NULL COMMENT '输出描述',
   `case` varchar(200) NOT NULL COMMENT '测试样例',
@@ -292,9 +292,9 @@ DROP TABLE IF EXISTS `problem_check`;
 CREATE TABLE `problem_check` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` bigint(20) NOT NULL COMMENT '题目提供者',
-  `test_data` varchar(2000) NOT NULL COMMENT '测试数据',
+  `test_data` varchar(2000) COMMENT '测试数据',
   `title` varchar(50) NOT NULL COMMENT '题目标题',
-  `description` varchar(500) NOT NULL COMMENT '题目描述',
+  `description` varchar(5000) NOT NULL COMMENT '题目描述',
   `input_des` varchar(300) NOT NULL COMMENT '输入描述',
   `output_des` varchar(300) NOT NULL COMMENT '输出描述',
   `case` varchar(200) NOT NULL COMMENT '测试样例',
@@ -335,9 +335,9 @@ DROP TABLE IF EXISTS `problem_user`;
 CREATE TABLE `problem_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `user_id` bigint(20) NOT NULL COMMENT '题目提供者',
-  `test_data` varchar(2000) NOT NULL COMMENT '测试数据',
+  `test_data` varchar(2000) COMMENT '测试数据',
   `title` varchar(50) NOT NULL COMMENT '题目标题',
-  `description` varchar(500) NOT NULL COMMENT '题目描述',
+  `description` varchar(5000) NOT NULL COMMENT '题目描述',
   `input_des` varchar(300) NOT NULL COMMENT '输入描述',
   `output_des` varchar(300) NOT NULL COMMENT '输出描述',
   `case` varchar(200) NOT NULL COMMENT '测试样例',
@@ -401,7 +401,7 @@ CREATE TABLE `save_code` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `problem_id` bigint(20) NOT NULL COMMENT '问题id',
   `user_id` bigint(20) NOT NULL COMMENT '提交用户Id',
-  `code` varchar(50) NOT NULL COMMENT '代码',
+  `code` varchar(80) NOT NULL COMMENT '代码',
   PRIMARY KEY (`id`),
   KEY `problem_id` (`problem_id`),
   KEY `user_id` (`user_id`)
@@ -427,6 +427,7 @@ DROP TABLE IF EXISTS `submit`;
 CREATE TABLE `submit` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `problem_id` bigint(20) NOT NULL COMMENT '题目ID',
+  `problem_type` varchar(20) NOT NULL COMMENT '题库类型',
   `user_id` bigint(20) NOT NULL COMMENT '提交用户ID',
   `language` varchar(20) NOT NULL COMMENT '提交语言',
   `submit_time` bigint(20) NOT NULL COMMENT '提交时间',
@@ -461,6 +462,7 @@ DROP TABLE IF EXISTS `submit_contest`;
 CREATE TABLE `submit_contest` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `problem_id` bigint(20) NOT NULL COMMENT '题目ID',
+  `problem_type` varchar(20) NOT NULL COMMENT '题库类型',
   `user_id` bigint(20) NOT NULL COMMENT '提交用户ID',
   `language` varchar(20) NOT NULL COMMENT '提交语言',
   `submit_time` bigint(20) NOT NULL COMMENT '提交时间',
@@ -497,6 +499,7 @@ DROP TABLE IF EXISTS `submit_user`;
 CREATE TABLE `submit_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `problem_id` bigint(20) NOT NULL COMMENT '题目ID',
+  `problem_type` varchar(20) NOT NULL COMMENT '题库类型',
   `user_id` bigint(20) NOT NULL COMMENT '提交用户ID',
   `language` varchar(20) NOT NULL COMMENT '提交语言',
   `submit_time` bigint(20) NOT NULL COMMENT '提交时间',

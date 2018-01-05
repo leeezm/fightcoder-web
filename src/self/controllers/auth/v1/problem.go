@@ -88,7 +88,7 @@ func (this *Problem) httpHandlerGetsProblemUser(c *gin.Context) {
 	} else {
 		num = num / (cfg.Show.PageNum)
 	}
-	resp := baseController.PagingResponse{RequestPage: requestPage, TotalPages: num, Data: problems}
+	resp := baseController.PagingResponse{RequestPage: requestPage, TotalPages: num, List: problems}
 	c.JSON(http.StatusOK, this.Success(resp))
 }
 

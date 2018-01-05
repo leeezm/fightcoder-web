@@ -30,6 +30,6 @@ func (this *Problem) httpHandlerGetProblems(c *gin.Context) {
 	tag := c.Query("tag")
 	requestPage := this.MustInt("requestPage", c)
 	problems, num := managers.ProblemManager{}.GetsProblem(search, tag, requestPage)
-	resp := baseController.PagingResponse{RequestPage: requestPage, TotalPages: num, Data: problems}
+	resp := baseController.PagingResponse{RequestPage: requestPage, TotalPages: num, List: problems}
 	c.JSON(http.StatusOK, this.Success(resp))
 }

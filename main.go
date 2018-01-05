@@ -58,7 +58,12 @@ func main() {
 //解决跨域问题(待过滤器)
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://128.0.9.253:8000")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+		c.Writer.Header().Set("X-Powered-By", "3.2.1")
+		c.Writer.Header().Set("Content-Type", "application/json;charset=utf-8")
 		c.Next()
 	}
 }

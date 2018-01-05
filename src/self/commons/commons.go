@@ -14,7 +14,7 @@ func InitAll(confFile string) {
 	g.InitConfig(confFile)
 
 	store.InitStore()
-	g.InitLog()
+	//g.InitLog()
 }
 
 func CloseAll() {

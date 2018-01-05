@@ -7,6 +7,7 @@ import (
 type Submit struct {
 	Id            int64  `form:"id" json:"id"`
 	ProblemId     int64  `form:"problemId" json:"problemId"`         //题目ID
+	ProblemType   string `form:"problemType" json:"problemType"`     //题库类型
 	UserId        int64  `form:"userId" json:"userId"`               //提交用户ID
 	Language      string `form:"language" json:"language"`           //提交语言
 	SubmitTime    int64  `form:"submitTime" json:"submitTime"`       //提交时间
@@ -18,8 +19,10 @@ type Submit struct {
 }
 
 type SubmitResponse struct {
-	*Submit `xorm:"extends" json:"submit"`
+	*Submit `xorm:"extends"`
 	Title   string `json:"title"`
+	AcRate  string `json:"acRate"`
+	AcCase  int    `json:"acCase"`
 }
 
 type CompleteSubmitResponse struct {
@@ -63,8 +66,8 @@ func (this Submit) GetById(id int64) (*SubmitResponse, error) {
 	return submit, nil
 }
 
-func (this Submit) QueryBySubmit(problemId, userId int64, language, resultDes string, size, start int) ([]*Submit, error) {
-	submit := Submit{ProblemId: problemId, UserId: userId, Language: language, ResultDes: resultDes}
+func (this Submit) QueryBySubmit(problemId, userId int64, language string, result int, size, start int) ([]*Submit, error) {
+	submit := Submit{ProblemId: problemId, UserId: userId, Language: language, Result: result}
 	submitList := make([]*Submit, 0)
 
 	err := OrmWeb.Limit(size, start).Find(&submitList, submit)
@@ -75,11 +78,11 @@ func (this Submit) QueryBySubmit(problemId, userId int64, language, resultDes st
 	return submitList, nil
 }
 
-func (this Submit) Count(problemId, userId int64, language, resultDes string) (int64, error) {
-	submit := Submit{ProblemId: problemId, UserId: userId, Language: language, ResultDes: resultDes}
+func (this Submit) Count(problemId, userId int64, language string, result int) (int, error) {
+	submit := Submit{ProblemId: problemId, UserId: userId, Language: language, Result: result}
 	sum, err := OrmWeb.Count(submit)
 	if err != nil {
 		return 0, err
 	}
-	return sum, nil
+	return int(sum), nil
 }

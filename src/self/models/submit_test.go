@@ -48,7 +48,7 @@ func TestSubmitGetById(t *testing.T) {
 func TestSubmitQueryBySubmit(t *testing.T) {
 	InitAllInTest()
 
-	submits, _ := Submit{}.QueryBySubmit(1, 123, "c_cpp", "", 3, 0)
+	submits, _ := Submit{}.QueryBySubmit(1, 123, "c_cpp", 1, 3, 0)
 
 	fmt.Println(len(submits))
 }

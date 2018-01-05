@@ -17,4 +17,7 @@ func Register(router *gin.Engine) {
 
 	user := &User{}
 	user.Register(v1)
+
+	submit := &Submit{}
+	submit.Register(v1)
 }

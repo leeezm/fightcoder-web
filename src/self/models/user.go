@@ -5,19 +5,19 @@ import (
 )
 
 type User struct {
-	Id           int64
-	AccountId    int64  //账号Id
-	NickName     string //昵称
-	Description  string //个人描述
-	Sex          int    //性别
-	Birthday     int64  //生日
-	DailyAddress string //日常所在地：省、市
-	RecvAddress  string //收件地址，仅自己可见
-	TShirtSize   string //T-恤尺码(S、M、L、XL、XXL、XXL)
-	StatSchool   int    //当前就学状态(小学及以下、中学学生、大学学生、非在校生)
-	Blog         string //博客地址
-	Git          string //Git地址
-	Avator       string //头像
+	Id           int64  `form:"id" json:"id"`
+	AccountId    int64  `form:"accountId" json:"accountId"`       //账号Id
+	NickName     string `form:"nickName" json:"nickName"`         //昵称
+	Description  string `form:"description" json:"description"`   //个人描述
+	Sex          int    `form:"sex" json:"sex"`                   //性别
+	Birthday     int64  `form:"birthday" json:"birthday"`         //生日
+	DailyAddress string `form:"dailyAddress" json:"dailyAddress"` //日常所在地：省、市
+	RecvAddress  string `form:"recvAddress" json:"recvAddress"`   //收件地址，仅自己可见
+	TShirtSize   string `form:"tShirtSize" json:"tShirtSize"`     //T-恤尺码(S、M、L、XL、XXL、XXL)
+	StatSchool   int    `form:"statSchool" json:"statSchool"`     //当前就学状态(小学及以下、中学学生、大学学生、非在校生)
+	Blog         string `form:"blog" json:"blog"`                 //博客地址
+	Git          string `form:"git" json:"git"`                   //Git地址
+	Avator       string `form:"avator" json:"avator"`             //头像
 }
 
 //增加
