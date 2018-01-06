@@ -5,12 +5,12 @@ import (
 )
 
 type Account struct {
-	Id       int64  `form:"id" json:"id"`
-	Email    string `form:"email" json:"email"`       //邮箱
-	Password string `form:"password" json:"password"` //密码
-	Phone    string `form:"phone" json:"phone"`       //手机号
-	QqNumber string `form:"qqNumber" json:"qqNumber"` //QQ号
-	QqId     int    `form:"qqId" json:"qqId"`         //用于第三方登录
+	Id       int64
+	Email    string //邮箱
+	Password string //密码
+	Phone    string //手机号
+	QqNumber string //QQ号
+	QqId     int    //用于第三方登录
 }
 
 //增加

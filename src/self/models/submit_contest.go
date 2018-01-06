@@ -7,12 +7,12 @@ import (
 type SubmitContest struct {
 	Id            int64
 	ProblemId     int64  //题目ID
-	ProblemType   string //题库类型
+	ProblemType   string //题目所属题库
 	UserId        int64  //提交用户ID
 	Language      string //提交语言
 	SubmitTime    int64  //提交时间
-	RunningTime   int    //耗时(ms)
-	RunningMemory int    //所占空间
+	RunningTime   int64  //耗时(ms)
+	RunningMemory int64  //所占空间
 	Result        int    //运行结果
 	ResultDes     string //结果描述
 	Code          string //提交代码
@@ -55,23 +55,13 @@ func (this SubmitContest) GetById(id int64) (*SubmitContest, error) {
 	return submitContest, nil
 }
 
-func (this SubmitContest) QueryBySubmitContest(contestId, problemId, userId int64, language, resultDes string, size, start int) ([]*SubmitContest, error) {
-	submitContest := SubmitContest{ProblemId: problemId, UserId: userId, Language: language, ResultDes: resultDes, ContestId: contestId}
+func (this SubmitContest) QueryBySubmitContest(submitContest *SubmitContest) ([]*SubmitContest, error) {
 	submitContestList := make([]*SubmitContest, 0)
 
-	err := OrmWeb.Limit(size, start).Find(&submitContestList, submitContest)
+	err := OrmWeb.Find(&submitContestList, submitContest)
 
 	if err != nil {
 		return nil, err
 	}
 	return submitContestList, nil
-}
-
-func (this SubmitContest) Count(contestId, problemId, userId int64, language, resultDes string) (int64, error) {
-	submitContest := SubmitContest{ProblemId: problemId, UserId: userId, Language: language, ResultDes: resultDes, ContestId: contestId}
-	sum, err := OrmWeb.Count(submitContest)
-	if err != nil {
-		return 0, err
-	}
-	return sum, nil
 }

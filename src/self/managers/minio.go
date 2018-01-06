@@ -7,6 +7,8 @@ package managers
 
 import (
 	"io"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -31,6 +33,25 @@ func NewMinioCli() MinioCli {
 	return MinioCli{cli: minioClient}
 }
 
+func (this MinioCli) GetCode(name string) string {
+	cfg := g.Conf()
+	var flag bool
+	resp, err := http.Get("http://xupt1.fightcoder.com:9001/" + cfg.Minio.CodeBucket + "/" + name)
+	if err != nil {
+		flag = true
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		flag = true
+	}
+	if flag {
+		return ""
+	}
+	return string(body)
+}
+
 func (this MinioCli) GetNameByPath(path string) string {
 	strs := strings.Split(path, "/")
 	return strs[len(strs)-1]
@@ -48,10 +69,6 @@ func (this MinioCli) GetCodeName() string {
 	return str + ".txt"
 }
 
-func (this MinioCli) GetPath(bucketName, objectName string) string {
-	return bucketName + "/" + objectName
-}
-
 func (this MinioCli) SaveImg(reader io.Reader, userId int64, picType string) string {
 	cfg := g.Conf()
 	str := this.GetImgName(userId, picType)
@@ -59,7 +76,7 @@ func (this MinioCli) SaveImg(reader io.Reader, userId int64, picType string) str
 	if err != nil {
 		panic(err)
 	}
-	return this.GetPath(cfg.Minio.ImgBucket, str)
+	return str
 }
 
 func (this MinioCli) SaveCode(code string) string {
@@ -69,7 +86,7 @@ func (this MinioCli) SaveCode(code string) string {
 	if err != nil {
 		panic(err)
 	}
-	return this.GetPath(cfg.Minio.CodeBucket, str)
+	return str
 }
 
 func (this MinioCli) RemoveCode(name string) {

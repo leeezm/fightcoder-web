@@ -57,7 +57,7 @@ func TestPlayerGetByContestId(t *testing.T) {
 		t.Error("GetByContestId() failed.Error:", err)
 	}
 
-	if  *getByContestId != player {
+	if *getByContestId != player {
 		t.Error("GetByContestId() :", err)
 	}
 }
@@ -73,7 +73,7 @@ func TestPlayerGetByUserId(t *testing.T) {
 		t.Error("GetByUserId() failed.Error:", err)
 	}
 
-	if  *getById != player {
+	if *getById != player {
 		t.Error("GetByUserId() failed. Error:", err)
 	}
 }

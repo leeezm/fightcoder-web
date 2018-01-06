@@ -19,14 +19,12 @@ type Nsq struct {
 }
 
 type SendMess struct {
-	ProblemType string `json:"problemType"`
-	ProblemId   int64  `json:"problemId"`
-	SubmitType  string `json:"submitType"`
-	SubmitId    int64  `json:"submitId"`
+	SubmitType string `json:"submit_type"`
+	SubmitId   int64  `json:"submit_id"`
 }
 
 func (this Nsq) send(topic string, sendMess *SendMess) {
-	if topic != "trueJudge" && topic != "virtualJudge" {
+	if topic != "realJudge" && topic != "virtualJudge" {
 		err := errors.New("topic is false!")
 		panic(err.Error())
 	}

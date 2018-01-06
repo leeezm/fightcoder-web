@@ -1,9 +1,6 @@
 package managers
 
 import (
-	"io/ioutil"
-	"net/http"
-
 	"self/commons/g"
 	models "self/models"
 )
@@ -35,24 +32,12 @@ func (this ProblemManager) SaveCode(problemId, userId int64, code string) {
 
 func (this ProblemManager) GetCode(problemId, userId int64) string {
 	saveCode, err := models.SaveCode{}.GetBySaveCode(problemId, userId)
-	if err != nil {
-		panic(err)
+	if err != nil || saveCode == nil {
+		return ""
+	} else {
+		str := NewMinioCli().GetCode(saveCode.Code)
+		return str
 	}
-	if saveCode != nil {
-		resp, err := http.Get("http://xupt1.fightcoder.com:9001/" + saveCode.Code)
-		if err != nil {
-			panic(err)
-		}
-
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err)
-		}
-
-		return string(body)
-	}
-	return ""
 }
 
 //题库题目的检索
@@ -99,12 +84,12 @@ func (this ProblemManager) AddProblemCheck(problemUserId int64) {
 		}
 		problemCheck := &models.ProblemCheck{}
 		problemCheck.UserId = pro.UserId
-		problemCheck.TestData = pro.TestData
-		problemCheck.Title = pro.Title
+		//problemCheck.TestData = pro.TestData
+		//problemCheck.Title = pro.Title
 		problemCheck.Description = pro.Description
 		problemCheck.InputDes = pro.InputDes
 		problemCheck.OutputDes = pro.OutputDes
-		problemCheck.Case = pro.Case
+		//problemCheck.Case = pro.Case
 		problemCheck.Hint = pro.Hint
 		problemCheck.TimeLimit = pro.TimeLimit
 		problemCheck.MemoryLimit = pro.MemoryLimit
@@ -114,7 +99,7 @@ func (this ProblemManager) AddProblemCheck(problemUserId int64) {
 		problemCheck.Code = pro.Code
 		problemCheck.LanguageLimit = pro.LanguageLimit
 		problemCheck.CheckStatus = "审核中"
-		problemCheck.ProblemUserId = pro.Id
+		//problemCheck.ProblemUserId = pro.Id
 
 		if _, err := (models.ProblemCheck{}).Create(problemCheck); err != nil {
 			panic(err)
@@ -122,52 +107,53 @@ func (this ProblemManager) AddProblemCheck(problemUserId int64) {
 	}
 }
 
-//管理员查看审核题目
-func (this ProblemManager) GetsProblemCheck(status string, size, start int) []*models.ProblemCheck {
-	problems, err := models.ProblemCheck{}.QueryByStatus(status, size, start)
-	if err != nil {
-		panic(err)
-	}
-	return problems
-}
-
-//管理员审核题目
-func (this ProblemManager) IsAddProblem(isAdd bool, checkId int64) {
-	pro, err := models.ProblemCheck{}.GetById(checkId)
-	if err != nil {
-		panic(err)
-	}
-	if isAdd {
-		problem := &models.Problem{}
-		problem.UserId = pro.UserId
-		problem.TestData = pro.TestData
-		problem.Title = pro.Title
-		problem.Description = pro.Description
-		problem.InputDes = pro.InputDes
-		problem.OutputDes = pro.OutputDes
-		problem.Case = pro.Case
-		problem.Case = pro.Case
-		problem.Hint = pro.Hint
-		problem.TimeLimit = pro.TimeLimit
-		problem.MemoryLimit = pro.MemoryLimit
-		problem.Tag = pro.Tag
-		problem.IsSpecialJudge = pro.IsSpecialJudge
-		problem.SpecialJudgeSource = pro.SpecialJudgeSource
-		problem.Code = pro.Code
-		problem.LanguageLimit = pro.LanguageLimit
-
-		if _, err := (models.Problem{}).Create(problem); err != nil {
-			panic(err)
-		}
-		pro.ProblemId = problem.Id
-		pro.CheckStatus = "审核通过"
-	} else {
-		pro.CheckStatus = "审核未通过"
-	}
-	if err := (models.ProblemCheck{}).Update(pro); err != nil {
-		panic(err)
-	}
-}
+//
+////管理员查看审核题目
+//func (this ProblemManager) GetsProblemCheck(status string, size, start int) []*models.ProblemCheck {
+//	problems, err := models.ProblemCheck{}.QueryByStatus(status, size, start)
+//	if err != nil {
+//		panic(err)
+//	}
+//	return problems
+//}
+//
+////管理员审核题目
+//func (this ProblemManager) IsAddProblem(isAdd bool, checkId int64) {
+//	pro, err := models.ProblemCheck{}.GetById(checkId)
+//	if err != nil {
+//		panic(err)
+//	}
+//	if isAdd {
+//		problem := &models.Problem{}
+//		problem.UserId = pro.UserId
+//		problem.TestData = pro.TestData
+//		problem.Title = pro.Title
+//		problem.Description = pro.Description
+//		problem.InputDes = pro.InputDes
+//		problem.OutputDes = pro.OutputDes
+//		problem.Case = pro.Case
+//		problem.Case = pro.Case
+//		problem.Hint = pro.Hint
+//		problem.TimeLimit = pro.TimeLimit
+//		problem.MemoryLimit = pro.MemoryLimit
+//		problem.Tag = pro.Tag
+//		problem.IsSpecialJudge = pro.IsSpecialJudge
+//		problem.SpecialJudgeSource = pro.SpecialJudgeSource
+//		problem.Code = pro.Code
+//		problem.LanguageLimit = pro.LanguageLimit
+//
+//		if _, err := (models.Problem{}).Create(problem); err != nil {
+//			panic(err)
+//		}
+//		pro.ProblemId = problem.Id
+//		pro.CheckStatus = "审核通过"
+//	} else {
+//		pro.CheckStatus = "审核未通过"
+//	}
+//	if err := (models.ProblemCheck{}).Update(pro); err != nil {
+//		panic(err)
+//	}
+//}
 
 //用户查看上传题目
 func (this ProblemManager) GetsProblemUser(userId int64, size, start int) []*models.ProblemUser {

@@ -34,7 +34,7 @@ func AutoLogin() gin.HandlerFunc {
 
 func Check() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, "/auth") || strings.HasPrefix(c.Request.URL.Path, "/api/v1/login") {
+		if strings.HasPrefix(c.Request.URL.Path, "/auth") {
 			checkLogin(c)
 		}
 		c.Next()

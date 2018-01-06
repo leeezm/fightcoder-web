@@ -1,14 +1,12 @@
 package models
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestSaveCode_Create(t *testing.T) {
 
 	InitAllInTest()
 
-	savecode := &SaveCode{ProblemId: 1, Code: "http://xupt1.fightcoder.com:9001/code/1513783757.txt"}
+	savecode := &SaveCode{ProblemId: 1, Code: "123"}
 	if _, err := savecode.Create(savecode); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
@@ -48,22 +46,5 @@ func TestLetter_GetById(t *testing.T) {
 
 	if *getSaveCode != *savecode {
 		t.Error("GetById() failed:", "%v != %v", savecode, getSaveCode)
-	}
-}
-
-func TestLetter_GetBySaveCode(t *testing.T) {
-
-	InitAllInTest()
-
-	savecode := &SaveCode{ProblemId: 1, UserId: 2, Code: "123456"}
-	SaveCode{}.Create(savecode)
-
-	getSaveCode, err := SaveCode{}.GetBySaveCode(savecode.ProblemId, savecode.UserId)
-	if err != nil {
-		t.Error("GetBySaveCode() failed:", err.Error())
-	}
-
-	if *getSaveCode != *savecode {
-		t.Error("GetBySaveCode() failed:", "%v != %v", savecode, getSaveCode)
 	}
 }

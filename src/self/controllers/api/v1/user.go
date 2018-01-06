@@ -25,32 +25,21 @@ func (this *User) Register(routergrp *gin.RouterGroup) {
 }
 
 func (this *User) httpHandlerLogin(c *gin.Context) {
-	userId, _ := c.Get("userId")
-	if userId != nil {
-		c.JSON(http.StatusOK, this.Success("Login successful!"))
+	email := this.MustString("email", c)
+	password := this.MustString("password", c)
+	code, msg := managers.UserManager{}.Login(email, password)
+
+	if code == 1 {
+		c.JSON(http.StatusOK, this.Fail(msg))
 	} else {
-		email := this.MustString("email", c)
-		password := this.MustString("password", c)
-		isLogin := this.MustString("remember", c)
-
-		code, msg := managers.UserManager{}.Login(email, password)
-
-		if code == 1 {
-			c.JSON(http.StatusOK, this.Fail(msg))
-		} else {
-			cookie := &http.Cookie{
-				Name:     "token",
-				Value:    base64.StdEncoding.EncodeToString([]byte(msg)),
-				Path:     "/",
-				HttpOnly: true,
-			}
-			if isLogin == "true" {
-				cookie.MaxAge = 259200
-			}
-
-			http.SetCookie(c.Writer, cookie)
-			c.JSON(http.StatusOK, this.Success("Login successful!"))
+		cookie := &http.Cookie{
+			Name:     "token",
+			Value:    base64.StdEncoding.EncodeToString([]byte(msg)),
+			Path:     "/",
+			HttpOnly: true,
 		}
+		http.SetCookie(c.Writer, cookie)
+		c.JSON(http.StatusOK, this.Success("Login successful!"))
 	}
 }
 

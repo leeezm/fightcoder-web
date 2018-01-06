@@ -39,7 +39,7 @@ func TestNoticeGetById(t *testing.T) {
 	Notice{}.Create(&notice)
 
 	getById, err := Notice{}.GetById(notice.Id)
-	if err!=nil{
+	if err != nil {
 		t.Error("GetById() failed. Error:", err)
 	}
 	if *getById != notice {
@@ -54,7 +54,7 @@ func TestNoticeGetByUserId(t *testing.T) {
 
 	getById, err := Notice{}.GetByUserId(notice.UserId)
 
-	if err!=nil{
+	if err != nil {
 		t.Error("GetByUserId() failed. Error:", err)
 	}
 	if *getById != notice {
@@ -69,10 +69,10 @@ func TestNotice_QueryByIsRead(t *testing.T) {
 
 	getById, err := Notice{}.QueryByIsRead(notice.IsRead)
 
-	if err!=nil{
+	if err != nil {
 		t.Error("QueryByIsRead() failed. Error:", err)
 	}
-	if  getById[0] != notice {
+	if getById[0] != notice {
 		t.Error("QueryByIsRead() failed. Error:", err)
 	}
 }

@@ -18,8 +18,8 @@ func TestContestCreate(t *testing.T) {
 func TestContestRemove(t *testing.T) {
 	InitAllInTest()
 	contest := new(Contest)
-	err:=contest.Remove(1)
-	if err!=nil{
+	err := contest.Remove(1)
+	if err != nil {
 		t.Error("Remove() failed. Error:", err)
 	}
 
@@ -31,8 +31,8 @@ func TestContestUpdate(t *testing.T) {
 	contest.Id = 2
 	contest.UserId = 1
 	contest.Description = "ddddd"
-	err:=contest.Update(contest)
-	if err!=nil{
+	err := contest.Update(contest)
+	if err != nil {
 		t.Error("Remove() failed. Error:", err)
 	}
 }

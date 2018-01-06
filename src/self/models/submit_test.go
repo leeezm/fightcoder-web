@@ -35,7 +35,10 @@ func TestSubmitGetById(t *testing.T) {
 	submit := &Submit{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha", Code: "sskajka"}
 	submit.Create(submit)
 
-	getSubmit, _ := submit.GetById(submit.Id)
+	getSubmit, err := submit.GetById(submit.Id)
+	if err != nil {
+		fmt.Println(err)
+	}
 	fmt.Println(getSubmit.Submit, getSubmit.Title)
 	//if err != nil {
 	//	t.Error("GetById() failed:", err.Error())

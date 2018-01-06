@@ -12,12 +12,13 @@ import (
 type ProblemCheck struct {
 	Id                 int64
 	UserId             int64  //题目提供者
-	TestData           string //测试数据
-	Title              string //题目标题
+	CaseData           string //测试数据
+	Titile             string //题目标题
 	Description        string //题目描述
 	InputDes           string //输入描述
 	OutputDes          string //输出描述
-	Case               string //测试样例
+	InputCase          string //测试输入
+	OutputCase         string //测试输出
 	Hint               string //题目提示(可以为对样例输入输出的解释)
 	TimeLimit          int    //时间限制
 	MemoryLimit        int    //内存限制
@@ -27,8 +28,8 @@ type ProblemCheck struct {
 	Code               string //标准程序
 	LanguageLimit      string //语言限制
 	CheckStatus        string //审核状态
-	ProblemId          int64  //所在正式题库的Id
-	ProblemUserId      int64  //所在私人题库的Id
+	ProblemId          string //所在正式题库的Id
+	ProblemUserId      string //所在私人题库的Id
 }
 
 //增加
@@ -65,21 +66,4 @@ func (this ProblemCheck) GetById(id int64) (*ProblemCheck, error) {
 		return nil, nil
 	}
 	return problemCheck, nil
-}
-
-func (this ProblemCheck) QueryByStatus(status string, size, start int) ([]*ProblemCheck, error) {
-	problems := make([]*ProblemCheck, 0)
-	err := OrmWeb.Where("check_status = ?", status).Limit(size, start).Find(&problems)
-	if err != nil {
-		return nil, err
-	}
-	return problems, nil
-}
-
-func (this ProblemCheck) Count(problemCheck *ProblemCheck) (int64, error) {
-	sum, err := OrmWeb.Count(problemCheck)
-	if err != nil {
-		return 0, err
-	}
-	return sum, nil
 }

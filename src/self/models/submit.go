@@ -7,7 +7,7 @@ import (
 type Submit struct {
 	Id            int64  `form:"id" json:"id"`
 	ProblemId     int64  `form:"problemId" json:"problemId"`         //题目ID
-	ProblemType   string `form:"problemType" json:"problemType"`     //题库类型
+	ProblemType   string `form:"problemType" json:"problemType"`     //
 	UserId        int64  `form:"userId" json:"userId"`               //提交用户ID
 	Language      string `form:"language" json:"language"`           //提交语言
 	SubmitTime    int64  `form:"submitTime" json:"submitTime"`       //提交时间

@@ -7,9 +7,9 @@ import (
 func TestGroupCreate(t *testing.T) {
 
 	InitAllInTest()
-	group:=Group{Name:"dsa"}
-	_,err:=group.Create(&group)
-	if err!=nil{
+	group := Group{Name: "dsa"}
+	_, err := group.Create(&group)
+	if err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
 
@@ -54,7 +54,7 @@ func TestGroupGetById(t *testing.T) {
 
 func TestGroupGetByName(t *testing.T) {
 	InitAllInTest()
-	group := Group{Description: "sda",Name:"cscas"}
+	group := Group{Description: "sda", Name: "cscas"}
 	Group{}.Create(&group)
 
 	getGroupByName, err := Group{}.GetByName(group.Name)

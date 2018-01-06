@@ -23,12 +23,12 @@ func (this SubmitManager) GetAcRate(problemId int64) (string, bool) {
 
 func (this SubmitManager) AddSubmit(problemId, userId int64, language string, submitTime int64, code string) (*models.Submit, bool) {
 	path := NewMinioCli().SaveCode(code)
-	submit := &models.Submit{ProblemId: problemId, UserId: userId, Language: language, SubmitTime: submitTime, Code: path}
+	submit := &models.Submit{ProblemId: problemId, UserId: userId, ProblemType: "real", Language: language, SubmitTime: submitTime, Code: path}
 	ProblemManager{}.SaveCode(problemId, userId, code)
 	if Id, err := (models.Submit{}).Create(submit); err != nil {
 		return nil, true
 	} else {
-		Nsq{}.send("trueJudge", &SendMess{"problem", 1, "submit", Id})
+		Nsq{}.send("realJudge", &SendMess{"submit", Id})
 	}
 	return submit, false
 }
@@ -41,7 +41,9 @@ func (this SubmitManager) GetSubmitById(id, userId int64) (*models.CompleteSubmi
 	if submit == nil || err != nil || err1 {
 		flag = true
 	} else {
+		code := NewMinioCli().GetCode(submit.Code)
 		res.SubmitResponse = submit
+		res.Code = code
 		res.AcRate = rate
 		if submit.UserId != userId {
 			res.IsHide = true
@@ -59,26 +61,26 @@ func (this SubmitManager) CountSubmit(problemId, language string, result int) in
 	}
 }
 
-//func (this SubmitManager) GetsSubmit(search, language string, result int, size, start int) ([]*models.SubmitResponse, bool) {
-//	var response []*models.SubmitResponse
-//	var flag bool
-//	ProblemManager{}.GetsProblem(search, "")
-//	submits, err := (models.Submit{}).QueryBySubmit(id, 0, language, result, size, start)
-//	if submits == nil || err != nil {
-//		flag = true
-//	} else {
-//		length := len(submits)
-//		response = make([]*models.SubmitResponse, length)
-//		for i, v := range submits {
-//			res := &models.SubmitResponse{Submit: v}
-//			problem, err := models.Problem{}.GetById(res.ProblemId)
-//			if err != nil || problem == nil {
-//				flag = true
-//				break
-//			}
-//			res.Title = problem.Title
-//			response[i] = res
-//		}
-//	}
-//	return response, flag
-//}
+func (this SubmitManager) GetsSubmit(problemId, language string, result int, size, start int) ([]*models.SubmitResponse, bool) {
+	var response []*models.SubmitResponse
+	var flag bool
+	id, _ := strconv.ParseInt(problemId, 10, 64)
+	submits, err := (models.Submit{}).QueryBySubmit(id, 0, language, result, size, start)
+	if submits == nil || err != nil {
+		flag = true
+	} else {
+		length := len(submits)
+		response = make([]*models.SubmitResponse, length)
+		for i, v := range submits {
+			res := &models.SubmitResponse{Submit: v}
+			problem, err := models.Problem{}.GetById(res.ProblemId)
+			if err != nil || problem == nil {
+				flag = true
+				break
+			}
+			res.Title = problem.Title
+			response[i] = res
+		}
+	}
+	return response, flag
+}

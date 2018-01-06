@@ -5,10 +5,10 @@ import (
 )
 
 type SaveCode struct {
-	Id        int64  `form:"id" json:"id"`
-	ProblemId int64  `form:"problemId" json:"problemId"`
-	UserId    int64  `form:"userId" json:"userId"` //提交用户Id
-	Code      string `form:"code" json:"code"`
+	Id        int64
+	ProblemId int64
+	UserId    int64  //提交用户Id
+	Code      string //代码
 }
 
 //增加

@@ -7,7 +7,7 @@ import (
 func TestSubmitContestCreate(t *testing.T) {
 	InitAllInTest()
 
-	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha", Code: "sskajka"}
+	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100}
 	if _, err := submitContest.Create(submitContest); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
@@ -31,7 +31,7 @@ func TestSubmitContestRemove(t *testing.T) {
 func TestSubmitContestGetById(t *testing.T) {
 	InitAllInTest()
 
-	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100, Result: 1, ResultDes: "haha",Code: "sskajka"}
+	submitContest := &SubmitContest{ProblemId: 1, UserId: 2, Language: "Java", SubmitTime: 1000, RunningTime: 10, RunningMemory: 100}
 	submitContest.Create(submitContest)
 
 	getSubmitContest, err := submitContest.GetById(submitContest.Id)
@@ -43,11 +43,11 @@ func TestSubmitContestGetById(t *testing.T) {
 		t.Error("GetById() failed:", "%v != %v", getSubmitContest, submitContest)
 	}
 }
-func TestSubmitContestQueryBySubmitContest(t *testing.T) {
+func TestSubmitContestQueryBySubmit(t *testing.T) {
 	InitAllInTest()
 
-	var submitContest SubmitContest
-	if _, err := submitContest.QueryBySubmitContest(2, 2, 1, "2", "1", 3, 0); err != nil {
-		t.Error("QueryBySubmitContest() failed:", err)
+	submitContest := &SubmitContest{ProblemId: 2}
+	if _, err := submitContest.QueryBySubmitContest(submitContest); err != nil {
+		t.Error("QueryBySubmit() failed:", err)
 	}
 }

@@ -5,7 +5,7 @@ import "testing"
 func TestProblemCheck_Create(t *testing.T) {
 	InitAllInTest()
 
-	problemCheck := &ProblemCheck{Title: "sadas", Description: "1111", CheckStatus: "审核中", ProblemId: 1, ProblemUserId: 1}
+	problemCheck := &ProblemCheck{Titile: "sadas", Description: "1111", ProblemId: "1", ProblemUserId: "1"}
 	if _, err := problemCheck.Create(problemCheck); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
@@ -23,7 +23,7 @@ func TestProblemCheck_Remove(t *testing.T) {
 func TestProblemCheck_Update(t *testing.T) {
 	InitAllInTest()
 
-	problemCheck := &ProblemCheck{Title: "sadas", Description: "11221111", ProblemId: 1, ProblemUserId: 1}
+	problemCheck := &ProblemCheck{Titile: "sadas", Description: "11221111", ProblemId: "1", ProblemUserId: "1"}
 	if err := problemCheck.Update(problemCheck); err != nil {
 		t.Error("Update() failed. Error:", err)
 	}
@@ -32,7 +32,7 @@ func TestProblemCheck_Update(t *testing.T) {
 func TestProblemCheck_GetById(t *testing.T) {
 	InitAllInTest()
 
-	problemCheck := &ProblemCheck{Title: "sadas", Description: "11221111", ProblemId: 1, ProblemUserId: 1}
+	problemCheck := &ProblemCheck{Titile: "sadas", Description: "11221111", ProblemId: "1", ProblemUserId: "1"}
 	ProblemCheck{}.Create(problemCheck)
 
 	getProblemCheck, err := ProblemCheck{}.GetById(problemCheck.Id)
@@ -42,23 +42,5 @@ func TestProblemCheck_GetById(t *testing.T) {
 
 	if *getProblemCheck != *problemCheck {
 		t.Error("GetById() failed:", "%v != %v", problemCheck, getProblemCheck)
-	}
-}
-
-func TestProblemCheck_GetByStatus(t *testing.T) {
-	InitAllInTest()
-
-	problemCheck := &ProblemCheck{Title: "sadas", Description: "1111", CheckStatus: "审核通过", ProblemId: 1, ProblemUserId: 1}
-	ProblemCheck{}.Create(problemCheck)
-
-	problemCheck1 := &ProblemCheck{Title: "sadas", Description: "1111", CheckStatus: "审核通过", ProblemId: 1, ProblemUserId: 1}
-	ProblemCheck{}.Create(problemCheck1)
-
-	problems, err := ProblemCheck{}.QueryByStatus("审核通过", 4, 0)
-	if err != nil {
-		t.Error("GetByStatus() failed:", err)
-	}
-	if len(problems) != 2 {
-		t.Error("GetByStatus() failed:", "count is wrong!")
 	}
 }

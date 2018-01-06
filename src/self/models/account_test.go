@@ -7,7 +7,7 @@ import (
 func TestAccountAdd(t *testing.T) {
 	InitAllInTest()
 
-	account := &Account{Email: "test@qq.com", Password: "123456", Phone: "1234", QqNumber: "1111", QqId: 1}
+	account := &Account{Email: "bbb@qq.com", Password: "123", Phone: "1234", QqNumber: "1111", QqId: 1}
 	if _, err := account.Add(account); err != nil {
 		t.Error("Add() failed.Error:", err)
 	}
@@ -41,21 +41,5 @@ func TestAccountGetById(t *testing.T) {
 
 	if *getAccount != *account {
 		t.Error("GetById() failed:", "%v != %v", account, getAccount)
-	}
-}
-
-func TestAccountGetByAccount(t *testing.T) {
-	InitAllInTest()
-
-	account := &Account{Email: "123456@qq.com", Password: "123", Phone: "1234", QqNumber: "1111", QqId: 1}
-	account.Add(account)
-
-	getAccount, err := account.GetByAccount(account)
-	if err != nil {
-		t.Error("GetByAccount() failed:", err.Error())
-	}
-
-	if *getAccount != *account {
-		t.Error("GetByAccount() failed:", "%v != %v", account, getAccount)
 	}
 }

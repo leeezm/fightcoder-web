@@ -7,12 +7,13 @@ import (
 type Problem struct {
 	Id                 int64  `form:"id" json:"id"`
 	UserId             int64  `form:"userId" json:"userId"`                         //题目提供者
-	TestData           string `form:"testData" json:"testData"`                     //测试数据
+	CaseData           string `form:"caseData" json:"caseData"`                     //测试数据
 	Title              string `form:"title" json:"title"`                           //题目标题
 	Description        string `form:"description" json:"description"`               //题目描述
 	InputDes           string `form:"inputDes" json:"inputDes"`                     //输入描述
 	OutputDes          string `form:"outputDes" json:"outputDes"`                   //输出描述
-	Case               string `form:"Case" json:"Case"`                             //样例输入
+	InputCase          string `form:"inputCase" json:"inputCase"`                   //测试输入
+	OutputCase         string `form:"outputCase" json:"outputCase"`                 //测试输出
 	Hint               string `form:"hint" json:"hint"`                             //题目提示(可以为对样例输入输出的解释)
 	TimeLimit          int    `form:"timeLimit" json:"timeLimit"`                   //时间限制
 	MemoryLimit        int    `form:"memoryLimit" json:"memoryLimit"`               //内存限制
