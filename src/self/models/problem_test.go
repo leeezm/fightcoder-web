@@ -13,7 +13,7 @@ import (
 func TestProblemCreate(t *testing.T) {
 	InitAllInTest()
 
-	problem := &Problem{Title: "sadas", Description: "1111"}
+	problem := &Problem{Title: "sadas", Description: "1111", TimeLimit: 1000, MemoryLimit: 128000}
 	if _, err := problem.Create(problem); err != nil {
 		t.Error("Create() failed. Error:", err)
 	}
