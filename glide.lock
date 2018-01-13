@@ -1,6 +1,8 @@
-hash: 665ff016d862773eee22298d12c04ba98a50e4ed83c59f0fdf23af50e195a672
-updated: 2017-12-31T06:11:45.629092+08:00
+hash: 18c887da6afeb4b7669ce7938dba5fa250ecf85facd236cc8ea50d8a5154fb63
+updated: 2018-01-13T20:35:25.457843+08:00
 imports:
+- name: github.com/bitly/go-nsq
+  version: eee57a3ac4174c55924125bb15eeeda8cffb6e6f
 - name: github.com/boj/redistore
   version: 4562487a4bee9a7c272b72bfaeda4917d0a47ab9
 - name: github.com/BurntSushi/toml
@@ -13,7 +15,7 @@ imports:
 - name: github.com/gin-contrib/sse
   version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
 - name: github.com/gin-gonic/contrib
-  version: 8f08bc9b92a9734916abda03656c5f1b99ad10be
+  version: 88aede40372d4bcb11e45168a8c30d99e44cf617
   subpackages:
   - sessions
 - name: github.com/gin-gonic/gin
@@ -35,6 +37,8 @@ imports:
   version: 1e59b77b52bf8e4b449a57e6f79f21226d571845
   subpackages:
   - proto
+- name: github.com/golang/snappy
+  version: 553a641470496b2327abcac10b36396bd98e45c9
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/securecookie
@@ -48,7 +52,7 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
 - name: github.com/minio/minio-go
-  version: e163d8055f79cf2a9b8af9d358b2814f21fd0472
+  version: 14f1d472d115bac5ca4804094aa87484a72ced61
   subpackages:
   - pkg/credentials
   - pkg/encrypt
@@ -65,22 +69,34 @@ imports:
 - name: github.com/sirupsen/logrus
   version: d682213848ed68c0a260ca37d6dd5ace8423f5ba
 - name: github.com/TV4/graceful
-  version: 38e2b734b7685e370e9c5b384002a885fc173a74
+  version: 8c328f88ce54ce54d28f4e4d3df6166e210b9dc8
 - name: github.com/ugorji/go
-  version: d41456c8f4e0623f1f158ae45e687fe059ac48c1
+  version: 9831f2c3ac1068a78f50999a30db84270f647af6
   subpackages:
   - codec
 - name: golang.org/x/crypto
-  version: 95a4943f35d008beabde8c11e5075a1b714e6419
+  version: 13931e22f9e72ea58bb73048bc752b48c6d4d4ac
   subpackages:
   - ssh/terminal
+- name: golang.org/x/net
+  version: 5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec
+  subpackages:
+  - idna
+  - lex/httplex
 - name: golang.org/x/sys
-  version: 83801418e1b59fb1880e363299581ee543af32ca
+  version: 810d7000345868fc619eb81f46307107118f4ae1
   subpackages:
   - unix
   - windows
+- name: golang.org/x/text
+  version: e19ae1496984b1c655b8044a65c0300a3c878dd3
+  subpackages:
+  - secure/bidirule
+  - transform
+  - unicode/bidi
+  - unicode/norm
 - name: gopkg.in/go-playground/validator.v8
   version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
 - name: gopkg.in/yaml.v2
-  version: 287cf08546ab5e7e37d55a84f7ed3fd1db036de5
+  version: d670f9405373e636a5a2765eea47fac0c9bc91a4
 testImports: []

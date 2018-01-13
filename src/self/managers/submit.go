@@ -23,7 +23,7 @@ func (this SubmitManager) GetAcRate(problemId int64) (string, bool) {
 
 func (this SubmitManager) AddSubmit(problemId, userId int64, language string, submitTime int64, code string) (*models.Submit, bool) {
 	path := NewMinioCli().SaveCode(code)
-	submit := &models.Submit{ProblemId: problemId, UserId: userId, ProblemType: "real", Language: language, SubmitTime: submitTime, Code: path}
+	submit := &models.Submit{ProblemId: problemId, UserId: userId, ProblemType: "real", Language: language, SubmitTime: submitTime, Result: 1, Code: path}
 	ProblemManager{}.SaveCode(problemId, userId, code)
 	if Id, err := (models.Submit{}).Create(submit); err != nil {
 		return nil, true
