@@ -47,7 +47,7 @@ func main() {
 
 	//优雅退出
 	graceful.LogListenAndServe(&http.Server{
-		Addr:    ":8888",
+		Addr:    ":9001",
 		Handler: router,
 	})
 
