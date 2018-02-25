@@ -21,7 +21,7 @@ webAddr = "root:123456@tcp(127.0.0.1:9000)/fightcoder?charset=utf8&loc=Asia%2FSh
 #webAddr = "root:123456@tcp(127.0.0.1:3306)/fightcoder?charset=utf8&loc=Asia%2FShanghai&parseTime=true&wait_timeout=3600"
 
 [minio]
-endpoint = "xupt1.fightcoder.com:9000"
+endpoint = "10.0.1.211:9000"
 accessKeyID = "FightCoder"
 secretAccessKey = "LetsToChangeTheWorld"
 secure = false

@@ -29,7 +29,7 @@ func (this Nsq) send(topic string, sendMess *SendMess) {
 		panic(err.Error())
 	}
 
-	adds := [1]string{"xupt2.fightcoder.com:9002"}
+	adds := [1]string{"10.0.1.212:9002"}
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	num := r.Intn(len(adds))
 	msg, err := json.Marshal(sendMess)
