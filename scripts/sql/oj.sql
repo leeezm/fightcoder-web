@@ -537,6 +537,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `account_id` bigint(20) NOT NULL COMMENT '账号Id',
+  `type` int(11) NOT NULL DEFAULT '0' COMMENT '用户类型(0:普通用户,1:网站用户)',
   `nick_name` varchar(20) NOT NULL COMMENT '昵称',
   `description` varchar(200) DEFAULT NULL COMMENT '个人描述',
   `sex` int(11) DEFAULT NULL COMMENT '性别',

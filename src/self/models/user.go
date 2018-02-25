@@ -7,6 +7,7 @@ import (
 type User struct {
 	Id           int64  `form:"id" json:"id"`
 	AccountId    int64  `form:"accountId" json:"accountId"`       //账号Id
+	Type         int    `form:"type" json:"type"`                 //用户类型(0:普通用户,1:网站用户)
 	NickName     string `form:"nickName" json:"nickName"`         //昵称
 	Description  string `form:"description" json:"description"`   //个人描述
 	Sex          int    `form:"sex" json:"sex"`                   //性别
