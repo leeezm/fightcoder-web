@@ -7,6 +7,7 @@ package controllers
 
 import (
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"self/controllers/baseController"
 	"self/managers"
