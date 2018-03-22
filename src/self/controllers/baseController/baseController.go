@@ -5,5 +5,4 @@
 
 package baseController
 
-type Base struct {
-}
+type Base struct{}
