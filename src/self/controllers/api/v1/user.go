@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"self/controllers/baseController"
 	"self/managers"
+	"self/models"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -42,6 +43,14 @@ func (this *User) Register(routergrp *gin.RouterGroup) {
 	routergrp.POST("/login", this.httpHandlerLogin)
 	routergrp.POST("/register", this.httpHandlerRegister)
 	routergrp.POST("/check", this.httpHandlerCheck)
+	routergrp.GET("/usermess", this.httpHandlerUserMess)
+}
+
+func (this *User) httpHandlerUserMess(c *gin.Context) {
+	userIdString := this.MustString("userId", c)
+	userId, _ := strconv.ParseInt(userIdString, 10, 64)
+	user, _ := models.User{}.GetById(userId)
+	c.JSON(http.StatusOK, this.Success(user))
 }
 
 func (this *User) httpHandlerLogin(c *gin.Context) {
@@ -51,8 +60,8 @@ func (this *User) httpHandlerLogin(c *gin.Context) {
 		param1 = this.MustString("code", c)
 		param2 = this.MustString("state", c)
 	} else if loginType == "simple" {
-		param1 = this.MustString("code", c)
-		param2 = this.MustString("state", c)
+		param1 = this.MustString("email", c)
+		param2 = this.MustString("password", c)
 	} else {
 		c.JSON(http.StatusOK, this.Fail("参数错误!"))
 	}

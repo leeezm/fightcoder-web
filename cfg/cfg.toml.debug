@@ -34,4 +34,4 @@ pageNum = 10
 [jwt]
 encodeStyle = "HS256"
 type = "JWT"
-maxEffectiveTime = 259200000            #最大存活时间:(3天)ms
+maxEffectiveTime = 604800000            #最大存活时间:(7天)ms

@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"self/controllers/baseController"
 	"self/managers"
-	"self/models"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +20,6 @@ type User struct {
 func (this *User) Register(routergrp *gin.RouterGroup) {
 	routergrp.PUT("/completeMess", this.httpHandlerCompleteMess)
 	routergrp.POST("/uploadImage", this.httpHandlerUploadImage)
-	routergrp.GET("/currentUser", this.httpHandlerCurrentUser)
 	routergrp.GET("/quit", this.httpHandlerQuit)
 }
 
@@ -36,22 +34,6 @@ func (this *User) httpHandlerUploadImage(c *gin.Context) {
 		}
 	} else {
 		c.JSON(http.StatusOK, this.Fail("上传失败!"))
-	}
-}
-
-func (this *User) httpHandlerCurrentUser(c *gin.Context) {
-	userId, _ := c.Get("userId")
-	var user *models.User
-	var err error
-	if id, ok := userId.(int64); ok {
-		user, err = models.User{}.GetById(id)
-	} else {
-		c.JSON(http.StatusOK, this.Fail("获取失败!"))
-	}
-	if err != nil {
-		c.JSON(http.StatusOK, this.Fail("获取失败!"))
-	} else {
-		c.JSON(http.StatusOK, this.Success(user))
 	}
 }
 
