@@ -27,6 +27,21 @@ const (
 type AccountManager struct {
 }
 
+type Mess struct {
+	Ret          int    `json:"ret"`
+	Msg          string `json:"msg"`
+	Nickname     string `json:"nickname"`
+	Gender       string `json:"gender"`
+	Province     string `json:"province"`
+	City         string `json:"city"`
+	Year         string `json:"year"`
+	Figureurl    string `json:"figureurl"`
+	Figureurl1   string `json:"figureurl_1"`
+	Figureurl2   string `json:"figureurl_2"`
+	FigureurlQq1 string `json:"figureurl_qq_1"`
+	FigureurlQq2 string `json:"figureurl_qq_2"`
+}
+
 func (this AccountManager) Register(email, password string) int64 {
 	account := &models.Account{Email: email, Password: md5Encode(password)}
 	accountId, err := models.Account{}.Add(account)

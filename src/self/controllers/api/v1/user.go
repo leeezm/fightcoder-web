@@ -20,25 +20,6 @@ type User struct {
 	baseController.Base
 }
 
-type Mess struct {
-	Ret             int    `json:"ret"`
-	Msg             string `json:"msg"`
-	IsLost          int    `json:"is_lost"`
-	Nickname        string `json:"nickname"`
-	Gender          string `json:"gender"`
-	Province        string `json:"province"`
-	Year            string `json:"year"`
-	Figureurl       string `json:"figureurl"`
-	Figureurl1      string `json:"figureurl_1"`
-	Figureurl2      string `json:"figureurl_2"`
-	FigureurlQq1    string `json:"figureurl_qq_1"`
-	FigureurlQq2    string `json:"figureurl_qq_2"`
-	Vip             string `json:"vip"`
-	YellowVipLevel  string `json:"yellow_vip_level"`
-	Level           string `json:"level"`
-	IsYellowYearVip string `json:"is_yellow_year_vip"`
-}
-
 func (this *User) Register(routergrp *gin.RouterGroup) {
 	routergrp.POST("/login", this.httpHandlerLogin)
 	routergrp.POST("/register", this.httpHandlerRegister)
@@ -47,9 +28,18 @@ func (this *User) Register(routergrp *gin.RouterGroup) {
 }
 
 func (this *User) httpHandlerUserMess(c *gin.Context) {
-	userIdString := this.MustString("userId", c)
-	userId, _ := strconv.ParseInt(userIdString, 10, 64)
-	user, _ := models.User{}.GetById(userId)
+	userIdString := c.Query("userId")
+	if userIdString == "" {
+		c.JSON(http.StatusOK, this.Fail("参数不能为空!"))
+	}
+	userId, err := strconv.ParseInt(userIdString, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusOK, this.Fail("参数有误!"))
+	}
+	user, err := models.User{}.GetById(userId)
+	if err != nil {
+		c.JSON(http.StatusOK, this.Fail("请重新尝试!"))
+	}
 	c.JSON(http.StatusOK, this.Success(user))
 }
 
