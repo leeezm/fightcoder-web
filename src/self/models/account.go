@@ -10,7 +10,7 @@ type Account struct {
 	Password string //密码
 	Phone    string //手机号
 	QqNumber string //QQ号
-	QqId     int    //用于第三方登录
+	QqId     string //用于第三方登录
 }
 
 //增加

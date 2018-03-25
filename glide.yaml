@@ -29,16 +29,5 @@ import:
   version: ^2.2.0
 - package: github.com/sirupsen/logrus
   version: ^1.0.4
-#- package: self/commons
-#  subpackages:
-#  - components
-#  - g
-#  - store
-#- package: self/controllers
-#  subpackages:
-#  - api/v1
-#  - auth/v1
-#  - baseController
-#  - self
-#- package: self/managers
-#- package: self/models
+- package: github.com/dgrijalva/jwt-go
+  version: ~3.2.0

@@ -33,7 +33,7 @@ CREATE TABLE `account` (
   `password` varchar(80) NOT NULL COMMENT '密码',
   `phone` varchar(20) NOT NULL COMMENT '手机号',
   `qq_number` varchar(20) DEFAULT NULL COMMENT 'QQ号',
-  `qq_id` int(11) DEFAULT NULL COMMENT '用于第三方登录',
+  `qq_id` varchar(40) DEFAULT NULL COMMENT '用于第三方登录',
   PRIMARY KEY (`id`),
   KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

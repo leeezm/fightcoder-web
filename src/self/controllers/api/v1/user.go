@@ -7,13 +7,10 @@ package controllers
 
 import (
 	"encoding/base64"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"net/http"
 	"self/controllers/baseController"
 	"self/managers"
-	"strings"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,74 +39,38 @@ type Mess struct {
 }
 
 func (this *User) Register(routergrp *gin.RouterGroup) {
-	routergrp.GET("/qq_connect/callback", this.httpHandlerQqConnect)
 	routergrp.POST("/login", this.httpHandlerLogin)
 	routergrp.POST("/register", this.httpHandlerRegister)
 	routergrp.POST("/check", this.httpHandlerCheck)
 }
 
-func (this *User) httpHandlerQqConnect(c *gin.Context) {
-	code := c.Query("code")
-	if code == "" {
-		c.JSON(http.StatusOK, this.Fail())
-	} else {
-		url := "https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101466300&client_secret=0104260a8f8faac3900cbf184bae55f5&redirect_uri=http%3a%2f%2fxupt4.fightcoder.com%2f%23%2fproblem&code="
-		url += code
-		resp, err := http.Get(url)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err.Error())
-		}
-		strs := strings.Split(string(body), "&")
-		token := strings.Split(strs[0], "=")
-
-		url = "https://graph.qq.com/oauth2.0/me?access_token="
-		resp, err = http.Get(url + token[1])
-		if err != nil {
-			panic(err.Error())
-		}
-
-		defer resp.Body.Close()
-		body, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		strs = strings.Split(string(body), "\"")
-
-		url = "https://graph.qq.com/user/get_user_info?oauth_consumer_key=101466300&access_token=" + token[1] + "&openid=" + strs[7]
-		resp, err = http.Get(url)
-		if err != nil {
-			panic(err.Error())
-		}
-
-		defer resp.Body.Close()
-		body, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			panic(err.Error())
-		}
-		mess := &Mess{}
-		if err = json.Unmarshal(body, mess); err != nil {
-			fmt.Println(err.Error())
-		}
-		c.JSON(http.StatusOK, this.Success(mess))
-	}
-}
-
 func (this *User) httpHandlerLogin(c *gin.Context) {
-	//根据code获取openid,判断用户是否第一次第三方登录，如果是，调至完善信息==>返回Token
-	//否，登录成功，返回token
-	//token用于进行登录标识和用户身份的标识
-	email := this.MustString("email", c)
-	password := this.MustString("password", c)
-	code, msg := managers.UserManager{}.Login(email, password)
+	loginType := this.MustString("type", c)
+	var param1, param2 string
+	if loginType == "qq" {
+		param1 = this.MustString("code", c)
+		param2 = this.MustString("state", c)
+	} else if loginType == "simple" {
+		param1 = this.MustString("code", c)
+		param2 = this.MustString("state", c)
+	} else {
+		c.JSON(http.StatusOK, this.Fail("参数错误!"))
+	}
+	state, msg, userId := managers.AccountManager{}.Login(param1, param2, loginType)
 
-	if code == 1 {
+	if state == managers.EMAIL_NOT_EXIT || state == managers.PASSWORD_IS_WRONG || state == managers.PARAM_IS_WRONG {
+		var msg string
+		switch state {
+		case managers.EMAIL_NOT_EXIT:
+			msg = "Email not exit!"
+			break
+		case managers.PASSWORD_IS_WRONG:
+			msg = "Password is wrong!"
+			break
+		case managers.PARAM_IS_WRONG:
+			msg = "Param is wrong!"
+			break
+		}
 		c.JSON(http.StatusOK, this.Fail(msg))
 	} else {
 		cookie := &http.Cookie{
@@ -119,18 +80,26 @@ func (this *User) httpHandlerLogin(c *gin.Context) {
 			HttpOnly: true,
 		}
 		http.SetCookie(c.Writer, cookie)
-		c.JSON(http.StatusOK, this.Success("Login successful!"))
+		result := make(map[string]string)
+		if state == managers.FIRST_LOGIN {
+			result["is_first"] = "true"
+			result["user_id"] = strconv.FormatInt(userId, 10)
+		} else {
+			result["is_first"] = "false"
+			result["user_id"] = strconv.FormatInt(userId, 10)
+		}
+		c.JSON(http.StatusOK, this.Success(result))
 	}
 }
 
 func (this *User) httpHandlerRegister(c *gin.Context) {
 	email := this.MustString("email", c)
 	password := this.MustString("password", c)
-	flag := managers.UserManager{}.Register(email, password)
-	if flag {
-		c.JSON(http.StatusOK, this.Fail("注册失败"))
+	userId := managers.AccountManager{}.Register(email, password)
+	if userId > 0 {
+		c.JSON(http.StatusOK, this.Success(userId))
 	} else {
-		c.JSON(http.StatusOK, this.Success("注册成功"))
+		c.JSON(http.StatusOK, this.Fail())
 	}
 }
 

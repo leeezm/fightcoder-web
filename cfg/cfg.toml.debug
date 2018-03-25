@@ -17,8 +17,8 @@ maxOpen = 10     # 最大打开连接数
 debug = false
 # fightcoderWeb端数据库信息
 
-webAddr = "root:123456@tcp(127.0.0.1:9000)/fightcoder?charset=utf8&loc=Asia%2FShanghai&parseTime=true&wait_timeout=3600"
-#webAddr = "root:123456@tcp(127.0.0.1:3306)/fightcoder?charset=utf8&loc=Asia%2FShanghai&parseTime=true&wait_timeout=3600"
+#webAddr = "root:123456@tcp(127.0.0.1:9000)/fightcoder?charset=utf8&loc=Asia%2FShanghai&parseTime=true&wait_timeout=3600"
+webAddr = "root:123456@tcp(127.0.0.1:3306)/fightcoder?charset=utf8&loc=Asia%2FShanghai&parseTime=true&wait_timeout=3600"
 
 [minio]
 endpoint = "10.0.1.211:9000"

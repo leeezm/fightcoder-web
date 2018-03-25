@@ -9,7 +9,11 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"self/commons/g"
+	"self/models"
+	"strconv"
 	"strings"
+	"time"
 )
 
 //type Token struct {
@@ -45,7 +49,12 @@ func GetPayLoad(token string) *PayLoadData {
 	return payLoad
 }
 
-func GetToken(header *HeaderData, payLoad *PayLoadData) string {
+func GetToken(user *models.User) string {
+	cfg := g.Conf()
+	header := &HeaderData{cfg.Jwt.EncodeStyle, cfg.Jwt.Type}
+	endTime := strconv.FormatInt(time.Now().UnixNano()/1000000+cfg.Jwt.MaxEffectiveTime, 10)
+	payLoad := &PayLoadData{endTime, user.NickName, strconv.FormatInt(user.Id, 10)}
+
 	str := header.EncodeStyle + "." + header.Type
 	Header := base64.StdEncoding.EncodeToString([]byte(str))
 
