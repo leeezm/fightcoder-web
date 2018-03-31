@@ -56,6 +56,44 @@ func (this AccountManager) Register(email, password string) int64 {
 	return userId
 }
 
+func (this AccountManager) getGithubOpenId(code string) string {
+	if code == "" {
+		return "-1"
+	} else {
+		params := "client_id=080191e49e855122ea33&client_secret=34b9a36397b171f01e83fc3c5b676177b29df79e&code="
+		params += code
+		resp, err := http.Post("https://github.com/login/oauth/access_token",
+			"application/x-www-form-urlencoded",
+			strings.NewReader(params))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(err)
+		}
+		strs := strings.Split(string(body), "&")
+		token := strings.Split(strs[0], "=")
+
+		url := "https://api.github.com/user?access_token="
+		resp, err = http.Get(url + token[1])
+		if err != nil {
+			panic(err.Error())
+		}
+
+		defer resp.Body.Close()
+		body, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		strs = strings.Split(string(body), "\"")
+		return strs[3]
+	}
+}
+
 func (this AccountManager) getQQOpenId(code string) string {
 	if code == "" {
 		return "-1"
